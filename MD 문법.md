@@ -130,3 +130,5 @@ public class BootSpringBootApplication {
 - space bar 3개 이상
 
 이렇게 쓰면 줄바꿈 됨 궁금하면 해보셈 ㅅㄱ;
+
+// 참고로 cmd+shift+v 하면 미리보기 바로 실행됨 알면 개꿀
