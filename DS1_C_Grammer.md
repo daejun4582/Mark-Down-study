@@ -1,6 +1,6 @@
 C++ 문법 정리
 =====
-귀찮은 관계로 여기에 대략 7강 부터 15강 내용 다 정리 해버릴 거임 ㅅㄱ
+귀찮은 관계로 여기에 대략 6강 부터 15강 내용 다 정리 해버릴 거임 ㅅㄱ
 
 ## 6.1. NameSpace
 ----
@@ -185,4 +185,132 @@ int main(){
 4
 ```
 
-12/25 8강
+
+## 7.1. Defalut Function Arguments
+----
+함수에 인자 안넘겨줘도 오류안나게 기본 설정가능함
+```cpp
+int exp(int x, int k =3){
+    if(k==2) return x*x;
+    return (exp(x,k-1)*x);
+}
+```
+근데 무조건 defalut arg앞에는 variable이 있어야함
+```cpp
+int foo(int i, int j = 7);                 // O
+int foo(int i==1, int j );                 // X
+int foo(int i, int j = 7,int k = 3);       // O
+int foo(int i==1, int j = 7,int k = 3);    // O
+int foo(int i==1, int j ,int k = 3);       // X
+```
+
+
+## 7.2. Reperence Operator
+쉽게 말해서 python에서 사용하는 deep copy라고 생각하면 된다.  
+그리고 인자는 포인터 위치에 원래는 주소를 나타내는 문자 ```&```를 사용하면 된다.
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int x;
+    int& foo = x;
+    foo = 34;
+    cout<< x;
+    return 1;
+}
+```
+결과는 무엇이 나올까?
+```
+34
+```
+이런식으로 주소를 통한 간접 참조가 가능하다.
+
+<br/>
+
+아래 예시는 reference 참조를 이용한 array 변경에 대한 예시이다.
+```cpp
+#include <iostream>
+
+using namespace std;
+
+
+int& max(int a[],int N){
+    int  i = 0;
+
+    for(int j= 0; j<N; j++){
+        if(a[i]<a[j]) i =j;
+    }
+    return a[i];
+}
+
+int main(void){
+    int array[] = {12,42,33,99,63};
+    int n = 5; 
+
+    max(array,5)=5;
+
+    for(int i= 0; i<n; i++){
+        cout<<array[i]<<" ";
+    }
+    return 1;
+}
+
+```
+```
+12 42 33 5 63 
+```
+
+<br/>
+
+## 7.3. malloc & free vs new &  delete
+
+c++에서는 new 와 delete 문법을 통하여 c에서 진행하던걸 구현한다.   
+예시코드
+```cpp
+#include <iostream>
+
+using namespace std;
+
+
+
+
+int main(void){
+    int N =3;
+
+    int*p = new int[N];
+    
+
+    for(int i = 0; i<N; i++) p[i] = i+1;
+    for(int i = 0; i<N; i++) cout<<p[i]<<" ";
+
+    delete[] p;
+    cout<< " "<<endl;
+
+    for(int i = 0; i<N; i++) cout<<p[i]<<" ";
+
+    return 1;
+}
+
+```
+```
+1 2 3  
+0 0 0 
+```
+
+한개 한개 동적 할당 또한 가능하고 문자열 전체를 할당할 수도 있다.    
+참고로 여기서는 initialize 또한 다음과 같이 가능하다.
+```cpp
+int* p = new int;                       // uninitialized int
+int* p = new int(7);                    // 7값으로 초기화
+
+string*ps = new string("hello");        // hello로 초기화
+
+int*p = new int[7];                     // 안됨
+int*p = new int[7]();                   // 0으로 초기화됨
+
+int *p = new int[5]{0,1,2,3,4};         // 5개 초기화
+sring *ps = new string[2]{"a","hello"}; // 문자열 2개 초기화
+```
